@@ -25,8 +25,7 @@
 #define GREATESTPP_VERSION_PATCH 0
 
 /* A unit testing system for C++, contained in 1 file.
- * It doesn't use dynamic allocation or depend on anything
- * beyond ANSI C89. */
+ * It doesn't use dynamic allocation */
  
  /**********************************************************
   * Minimal Test Runner Template
