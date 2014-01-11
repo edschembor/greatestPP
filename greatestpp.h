@@ -31,9 +31,31 @@
   * Minimal Test Runner Template
   **********************************************************/
   
-  #include "greatestpp.h"
+#include "greatestpp.h"
+#include <iostream>
+using std::cout;
   
+TEST method_works()
+{
+	PASS();
+}
   
+static void setup_cb( void *data )
+{
+	cout << "Setup callback for each test case\n";
+}
   
-  
-  
+static void teardown_cb( void *data )
+{
+	cout << "Teardown callback for each test case\n";
+}
+
+SUITE( suite )
+{
+	/*  Optional setup/teardown callbacks which run before/after each test case
+	 *  in the suite. Clears when the suite finishes */
+	SET_SETUP( setup_cb, voidp_to_callback_data );
+	SET_TEARDOWN( teardown_cb, voidp_to_callback_data );
+	
+	RUN_TEST( method_works );
+}
