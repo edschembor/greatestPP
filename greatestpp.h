@@ -17,9 +17,24 @@
  * Based on the "greatest" C library by Scott Vokes
  */
 
-#ifndef GREATEST_H
-#define GREATEST_H
+#ifndef GREATESTPP_H
+#define GREATESTPP_H
+
+#define GREATESTPP_VERSION_MAJOR 0
+#define GREATESTPP_VERSION_MINOR 1
+#define GREATESTPP_VERSION_PATCH 0
 
 /* A unit testing system for C++, contained in 1 file.
  * It doesn't use dynamic allocation or depend on anything
  * beyond ANSI C89. */
+ 
+ /**********************************************************
+  * Minimal Test Runner Template
+  **********************************************************/
+  
+  #include "greatestpp.h"
+  
+  
+  
+  
+  
