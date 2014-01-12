@@ -59,3 +59,39 @@ SUITE( suite )
 	
 	RUN_TEST( method_works );
 }
+
+/* Add definitions for the test runner's main file */
+GREATESTPP_MAIN_DEFS();
+
+int main( int argc, char **argv )
+{
+	GREATEST_MAIN_BEGIN();
+	RUN_SUITE( suite );
+	GREATEST_MAIN_END(); //Display results
+}
+
+/******************************************************************/
+
+#include <iostream>
+#include <string.h>
+#include <time.h>
+
+using std::string;
+
+/**************
+ *  Options   *
+ **************/
+ 
+ /* Default column width to avoid extra long output. */
+ #ifndef DEFAULT_WIDTH
+ #define DEFAULT_WIDTH 72
+ #endif
+ 
+ /* FILE *, for test logging. */
+ #ifndef GREATESTPP_STDOUT
+ #define GREATESTPP_STDOUT stdout
+ #endif
+
+ /*************
+  *   Types   *
+  *************/
