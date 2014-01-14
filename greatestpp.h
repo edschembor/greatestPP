@@ -96,7 +96,7 @@ using std::string;
   *   Types   *
   *************/
   
-/* Info for the current running suite. */
+// Info for the current running suite. 
 typedef struct greatest_suite_info
 {
 	unsigned int tests_run;
@@ -110,3 +110,18 @@ typedef struct greatest_suite_info
 	clock_t pre_test;
 	clock_t post_test;
 } suite_info;
+
+// Type for suite function
+typedef void ( suite_cb )( void );
+
+/* Types for setup/teardown callbacks. If non-NULL, will be run and pass
+ * the pointer to their additional data */
+ typedef ( setup_cb )( void *udata );
+ typedef ( teardown_cb )( void *udata );
+ 
+typedef enum
+{
+	FLAG_VERBOSE = 0x01,
+	FLAG_FIRST_FAIL = 0x02,
+	FLAG_LIST_ONLY = 0x04
+} FLAG;
