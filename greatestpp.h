@@ -95,3 +95,18 @@ using std::string;
  /*************
   *   Types   *
   *************/
+  
+/* Info for the current running suite. */
+typedef struct greatest_suite_info
+{
+	unsigned int tests_run;
+	unsigned int passed;
+	unsigned int failed;
+	unsigned int skipped;
+	
+	//Timers
+	clock_t pre_suite;
+	clock_t post_suite;
+	clock_t pre_test;
+	clock_t post_test;
+} suite_info;
