@@ -179,3 +179,30 @@ void post_test( const char *name, int res );
 void usage( const char *name );
 void SET_SETUP_CB( setup_cb *cb, void *udata );
 void SET_TEARDOWN_CB( teardown_cb *cb, void *udata );
+
+/************
+ *  Macros  *
+ ************/
+ 
+ /* Define a suite. */
+#define SUITE( NAME ) void NAME( void )
+
+/* Start defining a test function.
+ * The arguments are not included, to allow parametric testing. */
+#define TEST static int
+
+/* Run a suite. */
+#define RUN_SUITE( S_NAME ) run_suite( S_NAME, #S_NAME )
+
+/* Run a test in the current suite. */
+#define GREATEST_RUN_TEST( TEST )                                       \
+    do {                                                                \
+        if ( greatest_pre_test( #TEST ) == 1 ) 							\
+		{                            									\
+            int res = TEST();                                           \
+            greatest_post_test( #TEST, res );                           \
+        } else if ( GREATEST_LIST_ONLY() ) 								\
+		{                              									\
+            fprintf( GREATEST_STDOUT, "  %s\n", #TEST );                \
+        }                                                               \
+    } while (0)															\
