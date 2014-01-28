@@ -171,7 +171,7 @@ extern run_info info;
  *    Exported Functions     *
  *****************************/
  
- void do_pass( const char *name );
+void do_pass( const char *name );
 void do_fail( const char *name );
 void do_skip( const char *name );
 int pre_test( const char *name );
@@ -195,14 +195,45 @@ void SET_TEARDOWN_CB( teardown_cb *cb, void *udata );
 #define RUN_SUITE( S_NAME ) run_suite( S_NAME, #S_NAME )
 
 /* Run a test in the current suite. */
-#define GREATEST_RUN_TEST( TEST )                                       \
+#define RUN_TEST( TEST )                                       			\
     do {                                                                \
-        if ( greatest_pre_test( #TEST ) == 1 ) 							\
+        if ( pre_test( #TEST ) == 1 ) 									\
 		{                            									\
             int res = TEST();                                           \
-            greatest_post_test( #TEST, res );                           \
-        } else if ( GREATEST_LIST_ONLY() ) 								\
+            post_test( #TEST, res );                          		 	\
+        } else if ( LIST_ONLY() ) 										\
 		{                              									\
-            fprintf( GREATEST_STDOUT, "  %s\n", #TEST );                \
+            fprintf( STDOUT, "  %s\n", #TEST );                			\
         }                                                               \
     } while (0)															\
+	
+/* Run a test in the current suite with one void* argument,
+ * which can be a pointer to a struct with multiple arguments. */
+ #define RUN_TEST1(TEST, ENV)                                 		    \
+    do {                                                                \
+        if ( pre_test(#TEST) == 1 ) {                            		\
+            int res = TEST(ENV);                                        \
+            post_test( #TEST, res );                             		\
+        } else if ( LIST_ONLY() ) {                              		\
+            fprintf( STDOUT, "  %s\n", #TEST);                  		\
+        }                                                               \
+    } while (0)
+	
+//Parametric testing macro --- add later
+
+//Point at which I realized deleting "GREATESTPP" before each method/variable was stupid
+
+/* Check if the test runner is in verbose mode. */
+#define GREATESTPP_IS_VERBOSE() (greatestpp_info.flags & GREATESTPP_FLAG_VERBOSE)
+#define GREATESTPP_LIST_ONLY() (greatestpp_info.flags & GREATESTPP_FLAG_LIST_ONLY)
+#define GREATESTPP_FIRST_FAIL() (greatestpp_info.flags & GREATESTPP_FLAG_FIRST_FAIL)
+#define GREATESTPP_FAILURE_ABORT() (greatestpp_info.suite.failed > 0 && GREATESTPP_FIRST_FAIL())
+
+/* Message-less forms. */
+#define GREATESTPP_PASS() GREATESTPP_PASSm(NULL)
+#define GREATESTPP_FAIL() GREATESTPP_FAILm(NULL)
+#define GREATESTPP_SKIP() GREATESTPP_SKIPm(NULL)
+#define GREATESTPP_ASSERT(COND) GREATESTPP_ASSERTm(#COND, COND)
+#define GREATESTPP_ASSERT_FALSE(COND) GREATESTPP_ASSERT_FALSEm(#COND, COND)
+#define GREATESTPP_ASSERT_EQ(EXP, GOT) GREATESTPP_ASSERT_EQm(#EXP " != " #GOT, EXP, GOT)
+#define GREATESTPP_ASSERT_STR_EQ(EXP, GOT) GREATESTPP_ASSERT_STR_EQm(#EXP " != " #GOT, EXP, GOT)
