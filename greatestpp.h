@@ -237,3 +237,87 @@ void SET_TEARDOWN_CB( teardown_cb *cb, void *udata );
 #define GREATESTPP_ASSERT_FALSE(COND) GREATESTPP_ASSERT_FALSEm(#COND, COND)
 #define GREATESTPP_ASSERT_EQ(EXP, GOT) GREATESTPP_ASSERT_EQm(#EXP " != " #GOT, EXP, GOT)
 #define GREATESTPP_ASSERT_STR_EQ(EXP, GOT) GREATESTPP_ASSERT_STR_EQm(#EXP " != " #GOT, EXP, GOT)
+
+/* The following forms take an additional message argument first,
+ * to be displayed by the test runner. */
+
+/* Fail if a condition is not true, with message. */
+#define GREATESTPP_ASSERTm(MSG, COND)                                     \
+    do {                                                                \
+        greatestpp_info.msg = MSG;                                        \
+        greatestpp_info.fail_file = __FILE__;                             \
+        greatestpp_info.fail_line = __LINE__;                             \
+        if (!(COND)) return -1;                                         \
+        greatestpp_info.msg = NULL;                                       \
+    } while (0)
+
+#define GREATESTPP_ASSERT_FALSEm(MSG, COND)                               \
+    do {                                                                \
+        greatestpp_info.msg = MSG;                                        \
+        greatestpp_info.fail_file = __FILE__;                             \
+        greatestpp_info.fail_line = __LINE__;                             \
+        if ((COND)) return -1;                                          \
+        greatestpp_info.msg = NULL;                                       \
+    } while (0)
+
+#define GREATESTPP_ASSERT_EQm(MSG, EXP, GOT)                              \
+    do {                                                                \
+        greatestpp_info.msg = MSG;                                        \
+        greatestpp_info.fail_file = __FILE__;                             \
+        greatestpp_info.fail_line = __LINE__;                             \
+        if ((EXP) != (GOT)) return -1;                                  \
+        greatestpp_info.msg = NULL;                                       \
+    } while (0)
+
+#define GREATESTPP_ASSERT_STR_EQm(MSG, EXP, GOT)                          \
+    do {                                                                \
+        const char *exp_s = (EXP);                                      \
+        const char *got_s = (GOT);                                      \
+        greatestpp_info.msg = MSG;                                        \
+        greatestpp_info.fail_file = __FILE__;                             \
+        greatestpp_info.fail_line = __LINE__;                             \
+        if (0 != strcmp(exp_s, got_s)) {                                \
+            fprintf(GREATESTPP_STDOUT,                                    \
+                "Expected:\n####\n%s\n####\n", exp_s);                  \
+            fprintf(GREATESTPP_STDOUT,                                    \
+                "Got:\n####\n%s\n####\n", got_s);                       \
+            return -1;                                                  \
+        }                                                               \
+        greatestpp_info.msg = NULL;                                       \
+    } while (0)
+        
+#define GREATESTPP_PASSm(MSG)                                             \
+    do {                                                                \
+        greatestpp_info.msg = MSG;                                        \
+        return 0;                                                       \
+    } while (0)
+        
+#define GREATESTPP_FAILm(MSG)                                             \
+    do {                                                                \
+        greatestpp_info.fail_file = __FILE__;                             \
+        greatestpp_info.fail_line = __LINE__;                             \
+        greatestpp_info.msg = MSG;                                        \
+        return -1;                                                      \
+    } while (0)
+
+#define GREATESTPP_SKIPm(MSG)                                             \
+    do {                                                                \
+        greatestpp_info.msg = MSG;                                        \
+        return 1;                                                       \
+    } while (0)
+
+#define GREATESTPP_SET_TIME(NAME)                                         \
+    NAME = clock();                                                     \
+    if (NAME == (clock_t) -1) {                                         \
+        fprintf(GREATESTPP_STDOUT,                                        \
+            "clock error: %s\n", #NAME);                                \
+        exit(EXIT_FAILURE);                                             \
+    }
+
+#define GREATESTPP_CLOCK_DIFF(C1, C2)                                     \
+    fprintf(GREATESTPP_STDOUT, " (%lu ticks, %.3f sec)",                  \
+        (long unsigned int) (C2) - (C1),                                \
+        (double)((C2) - (C1)) / (1.0 * (double)CLOCKS_PER_SEC))         \
+
+/* Include several function definitions in the main test file. */
+#define GREATESTPP_MAIN_DEFS()                                            \
