@@ -320,4 +320,6 @@ void SET_TEARDOWN_CB( teardown_cb *cb, void *udata );
         (double)((C2) - (C1)) / (1.0 * (double)CLOCKS_PER_SEC))         \
 
 /* Include several function definitions in the main test file. */
-#define GREATESTPP_MAIN_DEFS()                                            \
+#define GREATESTPP_MAIN_DEFS()
+
+/* Is FILTER a subset of NAME? */
