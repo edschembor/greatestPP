@@ -6,7 +6,7 @@ A C++ unit testing library based on the Greatest C library: https://github.com/s
 
 A unit testing system for C++, contained in 1 file. It doesn't use dynamic allocation or depend on anything beyond ANSI C89, and the test scaffolding should build without warnings under -Wall -pedantic.
 
-To use, just #include greatestpp.h in your project.
+To use, just #include greatestpp.h in your project - but don't because its not yet completed
 
 Contributing
 ============
